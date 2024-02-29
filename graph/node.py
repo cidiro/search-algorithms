@@ -10,6 +10,24 @@ class Node:
         self.links.append(Link(self, node, link_value))
         return node
 
+    def get_children(self):
+        children = []
+        for link in self.links:
+            if link.target != self:
+                children.append(link.source)
+        return children    
+
+    def get_parents(self):
+        parents = []
+        for link in self.links:
+            if link.source != self:
+                parents.append(link.source)
+        return parents
+
+    def get_parent(self):
+        parents = self.get_parents()
+        return return parents[0] if parents else None
+        
     def remove_link(self, link):
         self.links.remove(link)
         return link
