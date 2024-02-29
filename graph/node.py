@@ -6,11 +6,13 @@ class Node:
         self.value = value
         self.links = []
 
-    def add_adjacent(self, node, link_value):
+    def add_adjacent(self, node, link_value=1):
         self.links.append(Link(self, node, link_value))
+        return node
 
     def remove_link(self, link):
         self.links.remove(link)
+        return link
 
     def __str__(self):
         return f"Node({self.value})"
