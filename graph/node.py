@@ -26,7 +26,7 @@ class Node:
 
     def get_parent(self):
         parents = self.get_parents()
-        return return parents[0] if parents else None
+        return (parents[0] if parents else None)
         
     def remove_link(self, link):
         self.links.remove(link)
