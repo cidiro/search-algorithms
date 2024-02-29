@@ -11,11 +11,8 @@ class Node:
         return node
 
     def get_children(self):
-        children = []
-        for link in self.links:
-            if link.target != self:
-                children.append(link.source)
-        return children    
+        return [link.source for link in self.links 
+                if link.target != self]
 
     def get_parents(self):
         parents = []
