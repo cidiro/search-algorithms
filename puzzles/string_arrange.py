@@ -8,6 +8,8 @@ class State(BaseState):
         self.data = list(data)
 
     def __eq__(self, other):
+        if not isinstance(other, State):
+            return False
         return self.data == other.data
 
     def __hash__(self):
@@ -32,11 +34,16 @@ class StringArrange(Puzzle):
         self.final_state = State(final_string)
 
     def produce_new_states(self, state: State):
-        new_states = set()
+        new_states = []
         for i in range(len(state) - 1):
             new_state = state.copy()
             new_state.swap(i, i + 1)
-            new_states.add(new_state)
+            new_states.append(new_state)
+
+        # Removing duplicates with a set and list comprehension
+        # preserves order and is most efficient
+        seen = set()
+        new_states = [x for x in new_states if not (x in seen or seen.add(x))]
 
         return new_states
 
@@ -54,5 +61,6 @@ def string_arrange(initial_string, final_string):
                 print(f"{node.value}\n  |")
             else:
                 print(node.value)
+        print(f"Path length: {len(path) - 1} nodes")
     else:
         print("No path found")
