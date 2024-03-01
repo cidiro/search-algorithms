@@ -1,4 +1,5 @@
-from algorithms.breadth_first_search import breadth_first_search as bfs
+from algorithms.breadth_first_search import BreadthFirstSearch
+from algorithms.solver import Solver
 from puzzles.puzzle import Puzzle
 from puzzles.state import State as BaseState
 
@@ -48,9 +49,10 @@ class StringArrange(Puzzle):
         return new_states
 
     def solve(self):
-        return bfs(self.initial_state,
-                   self.final_state,
-                   self.produce_new_states)
+        solver = Solver(BreadthFirstSearch())
+        return solver.solve(self.initial_state,
+                            self.final_state,
+                            self.produce_new_states)
 
 
 def string_arrange(initial_string, final_string):
