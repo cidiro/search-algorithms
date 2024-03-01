@@ -7,30 +7,29 @@ class Node:
         self.links = []
 
     def add_adjacent(self, node, link_value=1):
-        self.links.append(Link(self, node, link_value))
+        link = Link(self, node, link_value)
+        self.links.append(link)
+        node.links.append(link)
         return node
 
     def get_children(self):
-        return [link.source for link in self.links 
-                if link.target != self]
+        return [link.target for link in self.links
+                if link.target is not self]
 
     def get_parents(self):
-        parents = []
-        for link in self.links:
-            if link.source != self:
-                parents.append(link.source)
-        return parents
+        return [link.source for link in self.links
+                if link.source is not self]
 
     def get_parent(self):
         parents = self.get_parents()
         return (parents[0] if parents else None)
-        
+
     def remove_link(self, link):
         self.links.remove(link)
         return link
 
     def __str__(self):
-        return f"Node({self.value})"
+        return f"{self.value}"
 
     def __repr__(self):
         return str(self)
@@ -39,4 +38,4 @@ class Node:
         return self.value == other.value
 
     def __hash__(self):
-        return hash(self.value)
+        return id(self)

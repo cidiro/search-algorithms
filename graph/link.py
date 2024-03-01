@@ -17,4 +17,4 @@ class Link:
                 )
 
     def __hash__(self):
-        return hash((self.source, self.target, self.value))
+        return id(self)
