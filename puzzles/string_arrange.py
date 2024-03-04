@@ -1,6 +1,7 @@
 from algorithms.breadth_first_search import BreadthFirstSearch
-from algorithms.depth_first_search import DepthFirstSearch
+# from algorithms.depth_first_search import DepthFirstSearch
 from algorithms.solver import Solver
+from algorithms.strategy import Strategy
 from puzzles.puzzle import Puzzle
 from puzzles.state import State as BaseState
 
@@ -37,10 +38,12 @@ class StringArrange(Puzzle):
         self.elapsed_time = 0
         self.path = None
 
-        self.solve()
+    def is_goal_state(self, state: State):
+        return state == self.final_state
 
     def produce_new_states(self, state: State):
         new_states = []
+
         for i in range(len(state) - 1):
             new_state = state.copy()
             new_state.swap(i, i + 1)
@@ -53,10 +56,10 @@ class StringArrange(Puzzle):
 
         return new_states
 
-    def solve(self):
-        solver = Solver(DepthFirstSearch())
+    def solve(self, strategy: Strategy):
+        solver = Solver(strategy)
         self.path = solver.solve(self.initial_state,
-                                 self.final_state,
+                                 self.is_goal_state,
                                  self.produce_new_states)
         self.elapsed_time = solver.elapsed_time
 
@@ -74,5 +77,6 @@ class StringArrange(Puzzle):
 
 def string_arrange(initial_string, final_string):
     puzzle = StringArrange(initial_string, final_string)
+    puzzle.solve(BreadthFirstSearch())
     puzzle.print_path()
     print(f"Elapsed time: {puzzle.elapsed_time:.6f} seconds")

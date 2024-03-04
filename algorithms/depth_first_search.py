@@ -4,9 +4,9 @@ from graph.tree import Tree
 
 
 class DepthFirstSearch(Strategy):
-    def solve(self, start_state, end_state, produce_new_states):
+    def solve(self, start_state, is_goal_state, produce_new_states):
         self.tree = Tree(Node(start_state))
-        self.end_state = end_state
+        self.is_goal_state = is_goal_state
         self.produce_new_states = produce_new_states
         self.seen_nodes = set()
 
@@ -24,7 +24,7 @@ class DepthFirstSearch(Strategy):
             new_nodes = self.expand_node(node)
 
             for new_node in new_nodes:
-                if new_node.value == self.end_state:
+                if self.is_goal_state(new_node.value):
                     return new_node
                 node_stack.append(new_node)
                 self.seen_nodes.add(new_node)
