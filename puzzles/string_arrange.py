@@ -1,4 +1,5 @@
 from algorithms.breadth_first_search import BreadthFirstSearch
+from algorithms.depth_first_search import DepthFirstSearch
 from algorithms.solver import Solver
 from puzzles.puzzle import Puzzle
 from puzzles.state import State as BaseState
@@ -33,6 +34,10 @@ class StringArrange(Puzzle):
     def __init__(self, initial_string, final_string):
         self.initial_state = State(initial_string)
         self.final_state = State(final_string)
+        self.elapsed_time = 0
+        self.path = None
+
+        self.solve()
 
     def produce_new_states(self, state: State):
         new_states = []
@@ -49,20 +54,25 @@ class StringArrange(Puzzle):
         return new_states
 
     def solve(self):
-        solver = Solver(BreadthFirstSearch())
-        return solver.solve(self.initial_state,
-                            self.final_state,
-                            self.produce_new_states)
+        solver = Solver(DepthFirstSearch())
+        self.path = solver.solve(self.initial_state,
+                                 self.final_state,
+                                 self.produce_new_states)
+        self.elapsed_time = solver.elapsed_time
+
+    def print_path(self):
+        if self.path:
+            for i, state in enumerate(self.path):
+                if i != len(self.path) - 1:
+                    print(f"{state}\n  |")
+                else:
+                    print(state)
+            print(f"Path length: {len(self.path) - 1} states")
+        else:
+            print("No path found")
 
 
 def string_arrange(initial_string, final_string):
-    path = StringArrange(initial_string, final_string).solve()
-    if path:
-        for i, node in enumerate(path):
-            if i != len(path) - 1:
-                print(f"{node.value}\n  |")
-            else:
-                print(node.value)
-        print(f"Path length: {len(path) - 1} nodes")
-    else:
-        print("No path found")
+    puzzle = StringArrange(initial_string, final_string)
+    puzzle.print_path()
+    print(f"Elapsed time: {puzzle.elapsed_time:.6f} seconds")

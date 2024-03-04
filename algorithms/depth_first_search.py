@@ -3,7 +3,7 @@ from graph.node import Node
 from graph.tree import Tree
 
 
-class BreadthFirstSearch(Strategy):
+class DepthFirstSearch(Strategy):
     def solve(self, start_state, end_state, produce_new_states):
         self.tree = Tree(Node(start_state))
         self.end_state = end_state
@@ -16,17 +16,17 @@ class BreadthFirstSearch(Strategy):
         return None
 
     def build_search_tree(self):
-        node_queue = [self.tree.root]
+        node_stack = [self.tree.root]
         self.seen_nodes.add(self.tree.root)
 
-        while node_queue:
-            node = node_queue.pop(0)
+        while node_stack:
+            node = node_stack.pop()
             new_nodes = self.expand_node(node)
 
             for new_node in new_nodes:
                 if new_node.value == self.end_state:
                     return new_node
-                node_queue.append(new_node)
+                node_stack.append(new_node)
                 self.seen_nodes.add(new_node)
 
         return None
