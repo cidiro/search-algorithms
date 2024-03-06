@@ -53,9 +53,9 @@ class KnightsTour(Puzzle):
         if knight_position is None:
             raise ValueError("Knight not found")
         else:
-            moves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-            # moves = [(2, 1), (1, 2), (-1, 2), (-2, 1),
-            #          (-2, -1), (-1, -2), (1, -2), (2, -1)]
+            # moves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+            moves = [(2, 1), (1, 2), (-1, 2), (-2, 1),
+                     (-2, -1), (-1, -2), (1, -2), (2, -1)]
             possible_moves = [
                 (knight_position[0] + x, knight_position[1] + y)
                 for x, y in moves

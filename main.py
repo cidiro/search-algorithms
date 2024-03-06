@@ -3,6 +3,6 @@ from puzzles.knights_tour import knights_tour
 
 if __name__ == '__main__':
     # string_arrange("olhel", "hello")
-    # string_arrange("enigami", "imagine")
+    # string_arrange("eningami", "imaginen")
 
     knights_tour(5, 5)

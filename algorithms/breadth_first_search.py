@@ -28,6 +28,7 @@ class BreadthFirstSearch(Strategy):
                 node_queue.append(new_node)
                 self.seen_nodes.add(new_node)
 
+            self.watch_node = node  # Watch current node
         return None
 
     def expand_node(self, node):

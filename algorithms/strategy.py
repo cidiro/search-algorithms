@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
+from utils.print_update import print_update
 import threading
 import time
 
 
 class Strategy(ABC):
     def __init__(self):
-        self.seen_nodes = set()
         self.in_progress = False
+        self.watch_node = None  # Current node
+        self.seen_nodes = set()
         self.monitor_thread = threading.Thread(target=self.monitor,
                                                daemon=True)
 
@@ -23,9 +25,23 @@ class Strategy(ABC):
 
     def monitor(self):
         start_time = time.time()
-        while True:
-            if not self.in_progress:
-                break
-            print(f"\rTime elapsed: {(time.time() - start_time):.1f}s - "
-                  f"Seen nodes: {len(self.seen_nodes)}", end='', flush=True)
+        while self.in_progress:
+            elapsed_time = time.time() - start_time
+            nodes_discovered = len(self.seen_nodes)
+            state_string = (self.watch_node.value
+                            if self.watch_node else "None")
+
+            if nodes_discovered:
+                print_update(self.format_string(nodes_discovered,
+                                                elapsed_time,
+                                                state_string))
             time.sleep(2)
+
+    def format_string(self, nodes_discovered, elapsed_time, state):
+        lines = str(state).split("\n")
+        return (
+            f"Nodes discovered: {nodes_discovered}\n"
+            f"Time elapsed: {elapsed_time:.1f}s\n"
+            f"{"\n".join([f"\t\t\t{line}" for line in lines[:-1]])}\n"
+            f"Current state:\t\t{lines[-1]}"
+        )

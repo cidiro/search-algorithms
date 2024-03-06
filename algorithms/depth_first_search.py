@@ -28,6 +28,7 @@ class DepthFirstSearch(Strategy):
                 node_stack.append(new_node)
                 self.seen_nodes.add(new_node)
 
+            self.watch_node = node  # Watch current node
         return None
 
     def expand_node(self, node):
