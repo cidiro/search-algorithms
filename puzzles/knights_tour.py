@@ -1,7 +1,5 @@
 # from algorithms.breadth_first_search import BreadthFirstSearch
 from algorithms.depth_first_search import DepthFirstSearch
-from algorithms.solver import Solver
-from algorithms.strategy import Strategy
 from puzzles.puzzle import Puzzle
 from puzzles.state import State as BaseState
 
@@ -27,12 +25,11 @@ class State(BaseState):
 
 class KnightsTour(Puzzle):
     def __init__(self, width, height):
+        super().__init__()
         self.width = width
         self.height = height
-        self.elapsed_time = 0
-        self.path = None
 
-        # Default initial state
+        # Default initial state (5x5)
         # ['O', 'O', 'O', 'O', 'O']
         # ['O', 'K', 'O', 'O', 'O']
         # ['O', 'O', 'O', 'O', 'O']
@@ -78,24 +75,6 @@ class KnightsTour(Puzzle):
             new_states.append(new_state)
 
         return new_states
-
-    def solve(self, strategy: Strategy):
-        solver = Solver(strategy)
-        self.path = solver.solve(self.initial_state,
-                                 self.is_goal_state,
-                                 self.produce_new_states)
-        self.elapsed_time = solver.elapsed_time
-
-    def print_path(self):
-        if self.path:
-            for i, state in enumerate(self.path):
-                if i != len(self.path) - 1:
-                    print(f"{state}\n  |")
-                else:
-                    print(state)
-            print(f"Path length: {len(self.path) - 1} moves")
-        else:
-            print("No path found")
 
     def get_knight_position(self, state: State):
         for i, row in enumerate(state.data):

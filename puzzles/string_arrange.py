@@ -1,7 +1,5 @@
 from algorithms.breadth_first_search import BreadthFirstSearch
 # from algorithms.depth_first_search import DepthFirstSearch
-from algorithms.solver import Solver
-from algorithms.strategy import Strategy
 from puzzles.puzzle import Puzzle
 from puzzles.state import State as BaseState
 
@@ -33,10 +31,9 @@ class State(BaseState):
 
 class StringArrange(Puzzle):
     def __init__(self, initial_string, final_string):
+        super().__init__()
         self.initial_state = State(initial_string)
         self.final_state = State(final_string)
-        self.elapsed_time = 0
-        self.path = None
 
     def is_goal_state(self, state: State):
         return state == self.final_state
@@ -55,24 +52,6 @@ class StringArrange(Puzzle):
         new_states = [x for x in new_states if not (x in seen or seen.add(x))]
 
         return new_states
-
-    def solve(self, strategy: Strategy):
-        solver = Solver(strategy)
-        self.path = solver.solve(self.initial_state,
-                                 self.is_goal_state,
-                                 self.produce_new_states)
-        self.elapsed_time = solver.elapsed_time
-
-    def print_path(self):
-        if self.path:
-            for i, state in enumerate(self.path):
-                if i != len(self.path) - 1:
-                    print(f"{state}\n  |")
-                else:
-                    print(state)
-            print(f"Path length: {len(self.path) - 1} states")
-        else:
-            print("No path found")
 
 
 def string_arrange(initial_string, final_string):

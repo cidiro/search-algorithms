@@ -8,7 +8,6 @@ class DepthFirstSearch(Strategy):
         self.tree = Tree(Node(start_state))
         self.is_goal_state = is_goal_state
         self.produce_new_states = produce_new_states
-        self.seen_nodes = set()
 
         node = self.build_search_tree()
         if node:
