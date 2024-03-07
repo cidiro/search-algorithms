@@ -3,6 +3,9 @@
 from algorithms.greedy_best_first_search import GreedyBestFirstSearch
 from puzzles.puzzle import Puzzle
 from puzzles.state import State as BaseState
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import numpy as np
 
 
 class State(BaseState):
@@ -97,9 +100,52 @@ class KnightsTour(Puzzle):
     def calculate_heuristic(self, state: State):
         return len(self.get_valid_moves(state))
 
+    def plot_tour(self, stage):
+        def plot_move(start, end):
+            plt.plot([start[1], end[1]], [start[0], end[0]], 'k-', linewidth=2)
+            plt.text(start[1], start[0], '★', fontsize=40,
+                     ha='center', va='center', color='black')
+
+        if self.path:
+            if stage >= len(self.path):
+                stage = len(self.path) - 1
+
+            light_brown = "#ffdcb8"
+            dark_brown = "#bf803b"
+
+            plt.figure(figsize=(self.width, self.height))
+
+            # Initialize the chessboard with colored squares
+            chessboard_color = np.full((self.width, self.height, 3),
+                                       np.array(mcolors.to_rgb(light_brown)))
+            chessboard_color[1::2, ::2] = mcolors.to_rgb(dark_brown)
+            chessboard_color[::2, 1::2] = mcolors.to_rgb(dark_brown)
+
+            # Display the chessboard
+            plt.imshow(chessboard_color)
+
+            for i in range(stage - 1):
+                start = self.get_knight_position(self.path[i].value)
+                end = self.get_knight_position(self.path[i + 1].value)
+                plot_move(start, end)
+
+            knight_pos = self.get_knight_position(self.path[stage].value)
+            plot_move(self.get_knight_position(self.path[stage - 1].value),
+                      knight_pos)
+
+            plt.text(knight_pos[1], knight_pos[0], '♞',
+                     fontsize=40, ha='center', va='center',
+                     color='black', fontweight='bold')
+
+            plt.title(f"Knight's Tour ({stage} moves)")
+            plt.get_current_fig_manager().window.resizable(False, False)
+            plt.axis('off')
+            plt.show()
+
 
 def knights_tour(width=5, height=5):
     puzzle = KnightsTour(width, height)
     puzzle.solve(GreedyBestFirstSearch())
     puzzle.print_path()
+    puzzle.plot_tour(25)
     print(f"Elapsed time: {puzzle.elapsed_time:.6f} seconds")
