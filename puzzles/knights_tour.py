@@ -17,7 +17,7 @@ class State(BaseState):
         return hash(tuple(map(tuple, self.data)))
 
     def __str__(self):
-        return '\n'.join([''.join(row) for row in self.data])
+        return '\n'.join([' '.join(row) for row in self.data])
 
     def __len__(self):
         return len(self.data)
@@ -30,20 +30,20 @@ class KnightsTour(Puzzle):
         self.height = height
 
         # Default initial state (5x5)
-        # ['O', 'O', 'O', 'O', 'O']
-        # ['O', 'K', 'O', 'O', 'O']
-        # ['O', 'O', 'O', 'O', 'O']
-        # ['O', 'O', 'O', 'O', 'O']
-        # ['O', 'O', 'O', 'O', 'O']
+        # ['-', '-', '-', '-', '-']
+        # ['-', 'K', '-', '-', '-']
+        # ['-', '-', '-', '-', '-']
+        # ['-', '-', '-', '-', '-']
+        # ['-', '-', '-', '-', '-']
         self.initial_state = State(
-            [['O' for _ in range(width)] for _ in range(height)]
+            [['-' for _ in range(width)] for _ in range(height)]
         )
         self.initial_state.data[1][1] = 'K'
 
     def is_goal_state(self, state: State):
         for row in state.data:
             for cell in row:
-                if cell == 'O':
+                if cell == '-':
                     return False
         return True
 
@@ -63,7 +63,7 @@ class KnightsTour(Puzzle):
             valid_moves = [
                 move for move in possible_moves
                 if (self.is_within_bounds(move)
-                    and state.data[move[0]][move[1]] == 'O')
+                    and state.data[move[0]][move[1]] == '-')
             ]
 
         new_states = []
@@ -71,7 +71,7 @@ class KnightsTour(Puzzle):
         for move in valid_moves:
             new_state = State([row.copy() for row in state.data])
             new_state.data[move[0]][move[1]] = 'K'
-            new_state.data[knight_position[0]][knight_position[1]] = 'X'
+            new_state.data[knight_position[0]][knight_position[1]] = '*'
             new_states.append(new_state)
 
         return new_states

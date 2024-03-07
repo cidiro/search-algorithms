@@ -19,7 +19,7 @@ class Puzzle(ABC):
         pass
 
     def solve(self, strategy: Strategy):
-        print("Solving puzzle...")
+        print("Solving puzzle...\n")
         start_time = time.time()
         self.path = strategy.start(self.initial_state,
                                    self.is_goal_state,
