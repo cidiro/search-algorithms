@@ -5,4 +5,4 @@ if __name__ == '__main__':
     # string_arrange("olhel", "hello")
     # string_arrange("eningami", "imaginen")
 
-    knights_tour(5, 5)
+    knights_tour(8, 8)

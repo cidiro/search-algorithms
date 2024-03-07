@@ -1,5 +1,6 @@
 # from algorithms.breadth_first_search import BreadthFirstSearch
-from algorithms.depth_first_search import DepthFirstSearch
+# from algorithms.depth_first_search import DepthFirstSearch
+from algorithms.greedy_best_first_search import GreedyBestFirstSearch
 from puzzles.puzzle import Puzzle
 from puzzles.state import State as BaseState
 
@@ -7,6 +8,7 @@ from puzzles.state import State as BaseState
 class State(BaseState):
     def __init__(self, data: list[list[str]]):
         self.data = data
+        self.heuristic = 0
 
     def __eq__(self, other):
         if not isinstance(other, State):
@@ -48,6 +50,20 @@ class KnightsTour(Puzzle):
         return True
 
     def produce_new_states(self, state: State):
+        valid_moves = self.get_valid_moves(state)
+        knight_position = self.get_knight_position(state)
+
+        new_states = []
+        for move in valid_moves:
+            new_state = State([row.copy() for row in state.data])
+            new_state.data[move[0]][move[1]] = 'K'
+            new_state.data[knight_position[0]][knight_position[1]] = '*'
+            new_state.heuristic = self.calculate_heuristic(new_state)
+            new_states.append(new_state)
+
+        return new_states
+
+    def get_valid_moves(self, state: State):
         valid_moves = []
         knight_position = self.get_knight_position(state)
         if knight_position is None:
@@ -65,16 +81,7 @@ class KnightsTour(Puzzle):
                 if (self.is_within_bounds(move)
                     and state.data[move[0]][move[1]] == '-')
             ]
-
-        new_states = []
-
-        for move in valid_moves:
-            new_state = State([row.copy() for row in state.data])
-            new_state.data[move[0]][move[1]] = 'K'
-            new_state.data[knight_position[0]][knight_position[1]] = '*'
-            new_states.append(new_state)
-
-        return new_states
+        return valid_moves
 
     def get_knight_position(self, state: State):
         for i, row in enumerate(state.data):
@@ -87,9 +94,12 @@ class KnightsTour(Puzzle):
         return (0 <= position[0] < self.height
                 and 0 <= position[1] < self.width)
 
+    def calculate_heuristic(self, state: State):
+        return len(self.get_valid_moves(state))
+
 
 def knights_tour(width=5, height=5):
     puzzle = KnightsTour(width, height)
-    puzzle.solve(DepthFirstSearch())
+    puzzle.solve(GreedyBestFirstSearch())
     puzzle.print_path()
     print(f"Elapsed time: {puzzle.elapsed_time:.6f} seconds")
