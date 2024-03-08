@@ -29,7 +29,7 @@ class State(BaseState):
 
 
 class KnightsTour(Puzzle):
-    def __init__(self, width, height):
+    def __init__(self, knight_row, knight_col, width, height):
         super().__init__()
         self.width = width
         self.height = height
@@ -43,7 +43,7 @@ class KnightsTour(Puzzle):
         self.initial_state = State(
             [['-' for _ in range(width)] for _ in range(height)]
         )
-        self.initial_state.data[1][1] = 'K'
+        self.initial_state.data[knight_row][knight_col] = 'K'
 
     def is_goal_state(self, state: State):
         for row in state.data:
@@ -143,8 +143,8 @@ class KnightsTour(Puzzle):
             plt.show()
 
 
-def knights_tour(width=5, height=5):
-    puzzle = KnightsTour(width, height)
+def knights_tour(knight_row=1, knight_col=1, width=5, height=5):
+    puzzle = KnightsTour(knight_row, knight_col, width, height)
     puzzle.solve(GreedyBestFirstSearch())
     puzzle.print_path()
     puzzle.plot_tour(25)

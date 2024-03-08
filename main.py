@@ -6,4 +6,4 @@ if __name__ == '__main__':
     # string_arrange("olhel", "hello")
     # string_arrange("eningami", "imaginen")
 
-    knights_tour(8, 8)
+    knights_tour(1, 1, 8, 8)
