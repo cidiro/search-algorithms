@@ -7,6 +7,7 @@ from puzzles.state import State
 
 class Puzzle(ABC):
     def __init__(self):
+        self.strategy = None
         self.elapsed_time = 0
         self.path = None
 
@@ -19,6 +20,8 @@ class Puzzle(ABC):
         pass
 
     def solve(self, strategy: Strategy):
+        self.strategy = strategy
+
         print("Solving puzzle...\n")
         start_time = time.time()
         self.path = strategy.start(self.initial_state,

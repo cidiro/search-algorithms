@@ -61,7 +61,8 @@ class KnightsTour(Puzzle):
             new_state = State([row.copy() for row in state.data])
             new_state.data[move[0]][move[1]] = 'K'
             new_state.data[knight_position[0]][knight_position[1]] = '*'
-            new_state.heuristic = self.calculate_heuristic(new_state)
+            new_state.heuristic = (self.calculate_heuristic(new_state)
+                                   if self.strategy.has_heuristic else 0)
             new_states.append(new_state)
 
         return new_states
@@ -146,6 +147,6 @@ class KnightsTour(Puzzle):
 def knights_tour(knight_row=1, knight_col=1, width=5, height=5):
     puzzle = KnightsTour(knight_row, knight_col, width, height)
     puzzle.solve(GreedyBestFirstSearch())
-    puzzle.print_path()
+    # puzzle.print_path()
     puzzle.plot_tour(25)
     print(f"Elapsed time: {puzzle.elapsed_time:.6f} seconds")

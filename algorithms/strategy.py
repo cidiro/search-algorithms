@@ -8,6 +8,7 @@ import time
 class Strategy(ABC):
     def __init__(self):
         self.in_progress = False
+        self.has_heuristic = False
         self.watch_node = None  # Current node
         self.seen_nodes = set()
         self.monitor_thread = threading.Thread(target=self.monitor,

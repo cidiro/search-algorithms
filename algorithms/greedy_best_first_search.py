@@ -4,6 +4,10 @@ from graph.tree import Tree
 
 
 class GreedyBestFirstSearch(Strategy):
+    def __init__(self):
+        super().__init__()
+        self.has_heuristic = True
+
     def solve(self, start_state, is_goal_state, produce_new_states):
         self.tree = Tree(Node(start_state))
         self.is_goal_state = is_goal_state
