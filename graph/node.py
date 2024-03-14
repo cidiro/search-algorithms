@@ -6,19 +6,19 @@ class Node:
         self.value = value
         self.links = []
 
-    def add_adjacent(self, node, link_value=1):
-        link = Link(self, node, link_value)
+    def link(self, target, link_value=1):
+        link = Link(self, target, link_value)
         self.links.append(link)
-        node.links.append(link)
-        return node
+        target.links.append(link)
+        return link
 
     def get_children(self):
         return [link.target for link in self.links
                 if link.target is not self]
 
     def get_parents(self):
-        return [link.source for link in self.links
-                if link.source is not self]
+        return [link.origin for link in self.links
+                if link.origin is not self]
 
     def get_parent(self):
         parents = self.get_parents()

@@ -1,12 +1,11 @@
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import numpy as np
-from graph.node import Node
 from graph.tree import Tree
 
 
 def test_tree():
-    tree = Tree(Node('a'))
+    tree = Tree('a')
     tree.add_node(tree.root, 'b')
     tree.add_node(tree.root, 'c')
     tree.add_node(tree.root, 'd')

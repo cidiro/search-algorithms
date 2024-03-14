@@ -1,5 +1,4 @@
 from algorithms.strategy import Strategy
-from graph.node import Node
 from graph.tree import Tree
 
 
@@ -9,7 +8,7 @@ class GreedyBestFirstSearch(Strategy):
         self.has_heuristic = True
 
     def solve(self, start_state, is_goal_state, produce_new_states):
-        self.tree = Tree(Node(start_state))
+        self.tree = Tree(start_state)
         self.is_goal_state = is_goal_state
         self.produce_new_states = produce_new_states
 
@@ -43,7 +42,7 @@ class GreedyBestFirstSearch(Strategy):
         new_states = [x for x in new_states if x not in seen_states]
 
         # convert new states into new nodes
-        new_nodes = [node.add_adjacent(Node(new_state))
+        new_nodes = [self.tree.add_node(parent=node, value=new_state)
                      for new_state in new_states]
 
         return new_nodes

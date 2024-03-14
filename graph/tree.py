@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 
 
 class Tree:
-    def __init__(self, root):
-        self.root = root
+    def __init__(self, root_value):
+        self.root = Node(root_value)
 
-    def add_node(self, parent, child_value, link_value=1):
-        child = Node(child_value)
-        parent.add_adjacent(child, link_value)
+    def add_node(self, parent: Node, value, link_value=1):
+        child = Node(value)
+        parent.link(child, link_value)
         return child
 
-    def find_path_to_node(self, upper_node, lower_node):
+    def find_path_to_node(self, upper_node: Node, lower_node: Node):
         path = []
         while lower_node is not upper_node:
             path.append(lower_node)
@@ -23,7 +23,7 @@ class Tree:
         path.reverse()
         return path
 
-    def find_path(self, node):
+    def find_path(self, node: Node):
         return self.find_path_to_node(self.root, node)
 
     def max_depth(self):
