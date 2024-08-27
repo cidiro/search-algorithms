@@ -24,6 +24,10 @@ class Node:
         parents = self.get_parents()
         return (parents[0] if parents else None)
 
+    def get_neighbors(self):
+        return [link.target if link.origin is self else link.origin
+                for link in self.links]
+
     def remove_link(self, link):
         self.links.remove(link)
         return link
